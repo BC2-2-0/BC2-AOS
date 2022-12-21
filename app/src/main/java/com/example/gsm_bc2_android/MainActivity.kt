@@ -3,6 +3,7 @@ package com.example.gsm_bc2_android
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -45,25 +46,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun createAccount(email: String, password: String) {
-//        if (email.isNotEmpty() && password.isNotEmpty()) {
-//            auth?.createUserWithEmailAndPassword(email, password)
-//                ?.addOnCompleteListener(this) { task ->
-//                    if (task.isSuccessful) {
-//                        Toast.makeText(
-//                            this, "계정 생성 완료.",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                        finish() // 가입창 종료
-//                    } else {
-//                        Toast.makeText(
-//                            this, "계정 생성 실패",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
-//                }
-//        }
-//    }
+    // onStart. 유저가 앱에 이미 구글 로그인을 했는지 확인
+    public override fun onStart() {
+        super.onStart()
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+        if(account!==null){ // 이미 로그인 되어있을시 바로 메인 액티비티로 이동
+            val curUser = GoogleSignIn.getLastSignedInAccount(this)
+            val name = curUser?.displayName.toString()
+            Log.d("username",name)
+            val intent = Intent(this, HomeActivity::class.java)
+            intent.putExtra("username",name)
+            startActivity(intent)
+            this.finish()
+        }
+    } //onStart End
+
 
     private fun signIn() {
         val signInIntent = mGoogleSignInClient.signInIntent
@@ -79,6 +76,12 @@ class MainActivity : AppCompatActivity() {
                     val account = result.signInAccount
                     handleSignInResult(account!!)
                     startActivity(Intent(this,HomeActivity::class.java))
+                    val curUser = GoogleSignIn.getLastSignedInAccount(this)
+                    curUser?.let {
+                        val name = curUser.displayName.toString()
+                        Log.d("username",name)
+                    }
+                    this.finish()
                 }
             } catch (e: ApiException) {
                 println("안녕1 ${e.statusCode}")
