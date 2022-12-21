@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/google_login"/>
+        android:background="@drawable/google_login"/>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieView"
