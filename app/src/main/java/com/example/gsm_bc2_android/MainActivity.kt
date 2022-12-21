@@ -96,6 +96,7 @@ class MainActivity : AppCompatActivity() {
                 ?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         startActivity(Intent(this,HomeActivity::class.java))
+                        this.finish()
                     }
                 }
         } catch (e: ApiException) {

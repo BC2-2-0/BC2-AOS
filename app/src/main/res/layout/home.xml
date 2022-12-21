@@ -13,7 +13,7 @@
         android:fontFamily="@font/gmarketbold"
         android:includeFontPadding="false"
         android:paddingTop="35dp"
-        android:text="강영현님\n안녕하세요"
+        android:text="\n안녕하세요!!"
         android:textColor="@color/white"
         android:textSize="24dp"
         app:layout_constraintLeft_toLeftOf="@+id/point_block"
@@ -88,6 +88,20 @@
     />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="20dp"
+        android:text="결제하기"
+        android:fontFamily="@font/gmarketbold"
+        android:textColor="@color/background_color"
+        android:textSize="18dp"
+        />
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/charge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -101,5 +115,6 @@
         android:fontFamily="@font/spoqamedium"
         android:textSize="18dp"
         />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
