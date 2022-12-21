@@ -75,12 +75,12 @@ class MainActivity : AppCompatActivity() {
                 if (result?.isSuccess == true) {
                     val account = result.signInAccount
                     handleSignInResult(account!!)
-                    startActivity(Intent(this,HomeActivity::class.java))
                     val curUser = GoogleSignIn.getLastSignedInAccount(this)
-                    curUser?.let {
-                        val name = curUser.displayName.toString()
-                        Log.d("username",name)
-                    }
+                    val name = curUser?.displayName.toString()
+                    Log.d("username",name)
+                    val intent = Intent(this, HomeActivity::class.java)
+                    intent.putExtra("username",name)
+                    startActivity(intent)
                     this.finish()
                 }
             } catch (e: ApiException) {
