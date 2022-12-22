@@ -20,13 +20,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity android:name=".HomeActivity"></activity>
-        <activity android:name=".PaymentActivity"></activity>
+        <activity android:name=".NfcActivity"></activity>
     </application>
-
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-feature android:name="android.hardware.nfc" android:required="true" />
 </manifest>
