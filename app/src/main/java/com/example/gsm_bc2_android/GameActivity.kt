@@ -31,8 +31,13 @@ class GameActivity : AppCompatActivity() {
         //while(true) {
         val random = Random()
         val condition_num = random.nextInt(5)
-        val condition_list = arrayOf("0이 4개 이상 포함", "1,2,3,4 전부 포함", "7이 3개 이상", "4가 4개", "1,2,3이 들어가지 않음")
+        val condition_list = arrayOf("0이 4개 이상 포함", "1,2,3,4 전부 포함", "7이 3개 이상", "4가 4개", "1,2가 들어가지 않음")
         findViewById<TextView>(R.id.condition).text = condition_list[condition_num]
+
+        binding.backbutton.setOnClickListener(){
+            this.finish()
+            startActivity(Intent(this,HomeActivity::class.java))
+        }
 
         var numbers = arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
@@ -75,7 +80,7 @@ class GameActivity : AppCompatActivity() {
                         }
                     }
                     else if(condition_num == 4){
-                        if(numbers[1] == 0 && numbers[2] == 0 && numbers[3] == 0) {
+                        if(numbers[1] == 0 && numbers[2] == 0) {
                             timer.cancel()
                             binding.reset.visibility = View.VISIBLE
                         }
