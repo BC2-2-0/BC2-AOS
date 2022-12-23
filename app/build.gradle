@@ -12,6 +12,9 @@ android {
     dataBinding {
         enabled = true
     }
+    buildFeatures {
+        viewBinding true
+    }
     defaultConfig {
         applicationId "com.example.gsm_bc2_android"
         minSdk 21

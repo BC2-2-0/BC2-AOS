@@ -51,15 +51,15 @@ class BottomSheetFragment(): BottomSheetDialogFragment() {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        nfcAdapter.enableForegroundDispatch(this, nfcPendingIntent, null, null);
-    }
-
-    override fun onPause() {
-        super.onPause()
-        nfcAdapter.disableForegroundDispatch(this);
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        nfcAdapter.enableForegroundDispatch(this, nfcPendingIntent, null, null);
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        nfcAdapter.disableForegroundDispatch(this);
+//    }
 
     private fun setupRatio(bottomSheetDialog: BottomSheetDialog) {
         //id = com.google.android.material.R.id.design_bottom_sheet for Material Components

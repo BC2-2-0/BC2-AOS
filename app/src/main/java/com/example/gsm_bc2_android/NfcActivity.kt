@@ -7,6 +7,7 @@ import android.content.Intent
 import android.nfc.*
 import android.nfc.tech.Ndef
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
@@ -23,29 +24,29 @@ class NfcActivity : AppCompatActivity() {
         nfcAdapter = manager.defaultAdapter
         nfcPendingIntent = PendingIntent.getActivity(
             this, 0,
-            Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0
+            Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0 or PendingIntent.FLAG_MUTABLE
         )
     }
 
     override fun onResume() {
         super.onResume()
-        nfcAdapter.enableForegroundDispatch(this, nfcPendingIntent, null, null);
+        nfcAdapter.enableForegroundDispatch(this, nfcPendingIntent, null, null)
     }
 
     override fun onPause() {
         super.onPause()
-        nfcAdapter.disableForegroundDispatch(this);
+        nfcAdapter.disableForegroundDispatch(this)
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        val detectedTag : Tag? = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-        val writeValue : String = "50000";
-        val message: NdefMessage = createTagMessage(writeValue);
+        val detectedTag : Tag? = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
+        val writeValue = "50000"
+        val message: NdefMessage = createTagMessage(writeValue)
 
         if (detectedTag != null) {
             writeTag(message, detectedTag)
-        };
+        }
     }
 
     private fun createTagMessage(msg: String): NdefMessage {
@@ -54,6 +55,10 @@ class NfcActivity : AppCompatActivity() {
 
     fun writeTag(message: NdefMessage, tag: Tag) {
         val size = message.toByteArray().size
+        tag.techList.forEach {
+            Log.d("tag techlist", it)
+        }
+
         try {
             val ndef = Ndef.get(tag)
             if (ndef != null) {

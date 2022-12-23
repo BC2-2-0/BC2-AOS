@@ -26,17 +26,46 @@
         app:layout_constraintRight_toRightOf="parent"
         />
     <TextView
+        android:id="@+id/condition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/minigametext"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="0이 2개 이상"
+        android:textColor="@color/white"
+        android:fontFamily="@font/gmarketmedium"
+        android:layout_marginTop="10dp"
+        android:textSize="25dp"
+    />
+    <TextView
+        android:id="@+id/hash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="20dp"
-        android:text="12345678910ABCDEF"
+        android:text=""
         android:fontFamily="@font/gmarketmedium"
         android:textColor="@color/white"
         android:textSize="25dp"
 
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/hash"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="@drawable/button"
+        android:layout_marginBottom="70dp"
+        android:text="다시하기"
+        android:fontFamily="@font/gmarketmedium"
+        android:textColor="@color/background_color"
+        android:textSize="20dp"
+        android:visibility="invisible"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

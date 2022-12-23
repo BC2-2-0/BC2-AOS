@@ -40,6 +40,12 @@ class HomeActivity : AppCompatActivity() {
             this.finish()
         }
 
+        findViewById<Button>(R.id.game).setOnClickListener(){
+            val intent = Intent(this, GameActivity::class.java)
+            startActivity(intent)
+            this.finish()
+        }
+
         val manager = getSystemService(Context.NFC_SERVICE) as NfcManager
         nfcAdapter = manager.defaultAdapter
         nfcPendingIntent = PendingIntent.getActivity(
@@ -52,14 +58,22 @@ class HomeActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         val detectedTag : Tag? = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-        val writeValue : String = "50000";
+        val writeValue : String = "{email:'s21020@gsm.hs.kr', account=50000}"
         val message: NdefMessage = createTagMessage(writeValue);
 
         if (detectedTag != null) {
             writeTag(message, detectedTag)
         };
     }
+    override fun onResume() {
+        super.onResume()
+        nfcAdapter.enableForegroundDispatch(this, nfcPendingIntent, null, null);
+    }
 
+    override fun onPause() {
+        super.onPause()
+        nfcAdapter.disableForegroundDispatch(this);
+    }
     private fun createTagMessage(msg: String): NdefMessage {
         return NdefMessage(NdefRecord.createUri(msg))
     }
