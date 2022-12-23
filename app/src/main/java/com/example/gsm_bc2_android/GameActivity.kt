@@ -59,30 +59,35 @@ class GameActivity : AppCompatActivity() {
                         if(numbers[0] >= 4) {
                             timer.cancel()
                             binding.reset.visibility = View.VISIBLE
+                            binding.blockcoin.visibility = View.VISIBLE
                         }
                     }
                     else if(condition_num == 1){
                         if(numbers[1] != 0 && numbers[2] != 0 && numbers[3] != 0 && numbers[4] != 0) {
                             timer.cancel()
                             binding.reset.visibility = View.VISIBLE
+                            binding.blockcoin.visibility = View.VISIBLE
                         }
                     }
                     else if(condition_num == 2){
                         if(numbers[7] >= 3) {
                             timer.cancel()
                             binding.reset.visibility = View.VISIBLE
+                            binding.blockcoin.visibility = View.VISIBLE
                         }
                     }
                     else if(condition_num == 3){
                         if(numbers[4] == 4) {
                             timer.cancel()
                             binding.reset.visibility = View.VISIBLE
+                            binding.blockcoin.visibility = View.VISIBLE
                         }
                     }
                     else if(condition_num == 4){
                         if(numbers[1] == 0 && numbers[2] == 0) {
                             timer.cancel()
                             binding.reset.visibility = View.VISIBLE
+                            binding.blockcoin.visibility = View.VISIBLE
                         }
                     }
                 }
