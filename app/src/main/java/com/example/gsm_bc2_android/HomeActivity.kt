@@ -13,21 +13,41 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+
 
 class HomeActivity : AppCompatActivity() {
 
     private var TAG: String = "HomeActivity"
     private lateinit var nfcPendingIntent: PendingIntent
     private lateinit var nfcAdapter: NfcAdapter
+    private var auth : FirebaseAuth? = null
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
 
         //왼쪽 위에 구글 사용자 이름+안녕하세요!! 띄어주기
-        val user_name = intent.getStringExtra("username")
-        Log.d("name_HomeActivity",user_name.toString())
-        findViewById<TextView>(R.id.xml_username).text = user_name+"님\n안녕하세요!!"
+        auth = Firebase.auth
+        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
+
+        val curUser = GoogleSignIn.getLastSignedInAccount(this)
+        val name = curUser?.displayName.toString()
+
+        Log.d("name_HomeActivity",name)
+        findViewById<TextView>(R.id.xml_username).text = name+"님\n안녕하세요!!"
 
         findViewById<Button>(R.id.payment).setOnClickListener {
             val bottomSheet = BottomSheetFragment()
