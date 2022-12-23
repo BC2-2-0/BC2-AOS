@@ -90,21 +90,6 @@
         />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/present"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button"
-        app:layout_constraintRight_toRightOf="@+id/point_block"
-        app:layout_constraintBottom_toBottomOf="@+id/point_block"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="선물"
-        android:textColor="@color/background_color"
-        android:fontFamily="@font/spoqamedium"
-        android:textSize="18dp"
-    />
-
-    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/payment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -134,20 +119,6 @@
         android:textSize="18dp"
         />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/charge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button"
-        app:layout_constraintRight_toLeftOf="@+id/present"
-        app:layout_constraintBottom_toBottomOf="@+id/point_block"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="충전"
-        android:textColor="@color/background_color"
-        android:fontFamily="@font/spoqamedium"
-        android:textSize="18dp"
-        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
