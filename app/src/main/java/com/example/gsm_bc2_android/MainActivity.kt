@@ -21,13 +21,19 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
+import com.example.gsm_bc2_android.databinding.MainBinding
+
+
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: MainBinding
+
     private var auth : FirebaseAuth? = null
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main)
+        binding = MainBinding.inflate(layoutInflater);
+        setContentView(binding.root)
         auth = Firebase.auth
         val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -36,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
 
-        findViewById<ImageView>(R.id.google_login).setOnClickListener(){
+        binding.googleLogin.setOnClickListener(){
             val gsa = GoogleSignIn.getLastSignedInAccount(this)
             if (gsa != null) {
                 println("안녕 아ㅓㄹ올")
@@ -51,13 +57,12 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         val account = GoogleSignIn.getLastSignedInAccount(this)
         if(account!==null){ // 이미 로그인 되어있을시 바로 메인 액티비티로 이동
-            val curUser = GoogleSignIn.getLastSignedInAccount(this)
-            val name = curUser?.displayName.toString()
-            Log.d("username",name)
+//            val curUser = GoogleSignIn.getLastSignedInAccount(this)
+//            val name = curUser?.displayName.toString()
+//            Log.d("username",name)
             val intent = Intent(this, HomeActivity::class.java)
-            intent.putExtra("username",name)
-            startActivity(intent)
             this.finish()
+            startActivity(intent)
         }
     } //onStart End
 
@@ -75,13 +80,12 @@ class MainActivity : AppCompatActivity() {
                 if (result?.isSuccess == true) {
                     val account = result.signInAccount
                     handleSignInResult(account!!)
-                    val curUser = GoogleSignIn.getLastSignedInAccount(this)
-                    val name = curUser?.displayName.toString()
-                    Log.d("username",name)
+//                    val curUser = GoogleSignIn.getLastSignedInAccount(this)
+//                    val name = curUser?.displayName.toString()
+//                    Log.d("username",name)
                     val intent = Intent(this, HomeActivity::class.java)
-                    intent.putExtra("username",name)
-                    startActivity(intent)
                     this.finish()
+                    startActivity(intent)
                 }
             } catch (e: ApiException) {
                 println("안녕1 ${e.statusCode}")
