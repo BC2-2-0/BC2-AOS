@@ -12,6 +12,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.room.Room
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -20,10 +21,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class HomeActivity : AppCompatActivity() {
-
+    lateinit var db: Blockdb
     private var TAG: String = "HomeActivity"
     private lateinit var nfcPendingIntent: PendingIntent
     private lateinit var nfcAdapter: NfcAdapter
@@ -45,9 +49,17 @@ class HomeActivity : AppCompatActivity() {
 
         val curUser = GoogleSignIn.getLastSignedInAccount(this)
         val name = curUser?.displayName.toString()
+        val current_email = curUser?.email.toString()
 
         Log.d("name_HomeActivity",name)
         findViewById<TextView>(R.id.xml_username).text = name+"님\n안녕하세요!!"
+
+        db = Room.databaseBuilder(this, Blockdb::class.java, "Blockdb").allowMainThreadQueries().build()
+        //db.userDao().insertUser(newUser)
+        Log.d("test getuser",db.userDao().getAllUser().toString())
+        var current_account = db.userDao().getAccountByEmail(current_email)
+        findViewById<TextView>(R.id.current_money).text = current_account.toString()
+
 
         findViewById<Button>(R.id.payment).setOnClickListener {
             val bottomSheet = BottomSheetFragment()
@@ -72,6 +84,8 @@ class HomeActivity : AppCompatActivity() {
             this, 0,
             Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0
         )
+
+
     }
 
 

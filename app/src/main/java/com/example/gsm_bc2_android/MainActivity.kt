@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -26,6 +27,8 @@ import com.example.gsm_bc2_android.databinding.MainBinding
 
 
 class MainActivity : AppCompatActivity() {
+    lateinit var db: Blockdb
+
     private lateinit var binding: MainBinding
 
     private var auth : FirebaseAuth? = null
@@ -56,10 +59,7 @@ class MainActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         val account = GoogleSignIn.getLastSignedInAccount(this)
-        if(account!==null){ // 이미 로그인 되어있을시 바로 메인 액티비티로 이동
-//            val curUser = GoogleSignIn.getLastSignedInAccount(this)
-//            val name = curUser?.displayName.toString()
-//            Log.d("username",name)
+        if(account!==null){ // 이미 로그인 되어있을시 바로 홈 액티비티로 이동
             val intent = Intent(this, HomeActivity::class.java)
             this.finish()
             startActivity(intent)
@@ -84,6 +84,10 @@ class MainActivity : AppCompatActivity() {
 //                    val name = curUser?.displayName.toString()
 //                    Log.d("username",name)
                     val intent = Intent(this, HomeActivity::class.java)
+
+
+
+                    lateinit var db: Blockdb
                     this.finish()
                     startActivity(intent)
                 }
@@ -99,6 +103,14 @@ class MainActivity : AppCompatActivity() {
             auth?.signInWithCredential(credentials)
                 ?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        // 로그인 처음 성공했을 때 로컬DB에 계정 추가 ( auto_increment - uid, 이메일, 잔액(처음 0원) )
+                        val curUser = GoogleSignIn.getLastSignedInAccount(this) // 현재 유저
+                        val name = curUser?.email.toString() // 이름 불러옴
+                        Log.d("username main",name) // 로그 남기고
+                        var newUser = UserInfo(null,name,0) // 유저객체 만들고
+                        db = Room.databaseBuilder(this, Blockdb::class.java, "Blockdb").allowMainThreadQueries().build() // 디비 설정
+                        db.userDao().insertUser(newUser) // 유저 row 생성
+
                         startActivity(Intent(this,HomeActivity::class.java))
                         this.finish()
                     }
