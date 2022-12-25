@@ -2,7 +2,6 @@ package com.example.gsm_bc2_android
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -10,17 +9,14 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.bumptech.glide.Glide
-import java.time.LocalDateTime
-import java.util.*
-import kotlin.concurrent.schedule
 import com.example.gsm_bc2_android.databinding.GameBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import java.util.*
 
 class GameActivity : AppCompatActivity() {
     lateinit var db: Blockdb
     private lateinit var binding: GameBinding
     private val timer = Timer()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
