@@ -29,6 +29,9 @@ interface UserDao {
 
     @Query("update UserInfo set account = account + :account where email = :email") // 포인트 획득했을 때 ( 값 증가만 가능 )
     fun AddAccountByEmail(email: String,account: Int)
+
+    @Query("delete from UserInfo")
+    fun deleteAllUser()
 //
 //    @Query("update UserInfo set account = account - :account where email = :email")
 //    fun UseAccountByEmail(email: String, account: Int)
