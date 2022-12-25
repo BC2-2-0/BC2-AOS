@@ -1,32 +1,29 @@
 package com.example.gsm_bc2_android
 
 //import BottomSheetFragment
+
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.nfc.*
 import android.nfc.tech.Ndef
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.example.gsm_bc2_android.databinding.HomeBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class HomeActivity : AppCompatActivity() {
+    private lateinit var binding: HomeBinding
     lateinit var db: Blockdb
     private var TAG: String = "HomeActivity"
     private lateinit var nfcPendingIntent: PendingIntent
@@ -36,7 +33,8 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.home)
+        binding = HomeBinding.inflate(layoutInflater);
+        setContentView(binding.root)
 
         //왼쪽 위에 구글 사용자 이름+안녕하세요!! 띄어주기
         auth = Firebase.auth
@@ -61,18 +59,18 @@ class HomeActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.current_money).text = current_account.toString()
 
 
-        findViewById<Button>(R.id.payment).setOnClickListener {
+        binding.payment.setOnClickListener {
             val bottomSheet = BottomSheetFragment()
             bottomSheet.show(supportFragmentManager, BottomSheetFragment.TAG)
         }
 
-        findViewById<Button>(R.id.nfcpage).setOnClickListener(){
-            val intent = Intent(this, NfcActivity::class.java)
+        binding.userPage.setOnClickListener(){
+            val intent = Intent(this, UserActivity::class.java)
             startActivity(intent)
             this.finish()
         }
 
-        findViewById<Button>(R.id.game).setOnClickListener(){
+        binding.game.setOnClickListener(){
             val intent = Intent(this, GameActivity::class.java)
             startActivity(intent)
             this.finish()
