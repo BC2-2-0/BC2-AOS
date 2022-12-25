@@ -8,14 +8,18 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
 import com.bumptech.glide.Glide
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.concurrent.schedule
 import com.example.gsm_bc2_android.databinding.GameBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 
 class GameActivity : AppCompatActivity() {
+    lateinit var db: Blockdb
     private lateinit var binding: GameBinding
+    private val timer = Timer()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +28,9 @@ class GameActivity : AppCompatActivity() {
 //        val hash_data = findViewById<TextView>(R.id.hash)
         binding = GameBinding.inflate(layoutInflater);
         setContentView(binding.root)
+
+        val curUser = GoogleSignIn.getLastSignedInAccount(this)
+        val current_email = curUser?.email.toString()
 
         val gif = findViewById<ImageView>(R.id.minigame_gif)
         Glide.with(this).load(R.raw.pickaxe).into(gif)
@@ -36,12 +43,14 @@ class GameActivity : AppCompatActivity() {
 
         binding.backbutton.setOnClickListener(){
             this.finish()
+            timer.cancel()
             startActivity(Intent(this,HomeActivity::class.java))
         }
 
         var numbers = arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
-        val timer = Timer()
+        db = Room.databaseBuilder(this, Blockdb::class.java, "Blockdb").allowMainThreadQueries().build()
+
         timer.schedule(object : TimerTask() {
             override fun run() {
                 numbers = arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
@@ -60,6 +69,7 @@ class GameActivity : AppCompatActivity() {
                             timer.cancel()
                             binding.reset.visibility = View.VISIBLE
                             binding.blockcoin.visibility = View.VISIBLE
+                            db.userDao().AddAccountByEmail(current_email,10)
                         }
                     }
                     else if(condition_num == 1){
@@ -67,6 +77,7 @@ class GameActivity : AppCompatActivity() {
                             timer.cancel()
                             binding.reset.visibility = View.VISIBLE
                             binding.blockcoin.visibility = View.VISIBLE
+                            db.userDao().AddAccountByEmail(current_email,10)
                         }
                     }
                     else if(condition_num == 2){
@@ -74,6 +85,7 @@ class GameActivity : AppCompatActivity() {
                             timer.cancel()
                             binding.reset.visibility = View.VISIBLE
                             binding.blockcoin.visibility = View.VISIBLE
+                            db.userDao().AddAccountByEmail(current_email,10)
                         }
                     }
                     else if(condition_num == 3){
@@ -81,6 +93,7 @@ class GameActivity : AppCompatActivity() {
                             timer.cancel()
                             binding.reset.visibility = View.VISIBLE
                             binding.blockcoin.visibility = View.VISIBLE
+                            db.userDao().AddAccountByEmail(current_email,10)
                         }
                     }
                     else if(condition_num == 4){
@@ -88,6 +101,7 @@ class GameActivity : AppCompatActivity() {
                             timer.cancel()
                             binding.reset.visibility = View.VISIBLE
                             binding.blockcoin.visibility = View.VISIBLE
+                            db.userDao().AddAccountByEmail(current_email,10)
                         }
                     }
                 }

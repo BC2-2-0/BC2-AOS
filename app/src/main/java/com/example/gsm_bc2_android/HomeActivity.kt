@@ -51,7 +51,7 @@ class HomeActivity : AppCompatActivity() {
         val name = curUser?.displayName.toString()
         val current_email = curUser?.email.toString()
 
-        Log.d("name_HomeActivity",name)
+        //Log.d("name_HomeActivity",name)
         findViewById<TextView>(R.id.xml_username).text = name+"님\n안녕하세요!!"
 
         db = Room.databaseBuilder(this, Blockdb::class.java, "Blockdb").allowMainThreadQueries().build()
