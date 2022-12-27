@@ -2,9 +2,7 @@ package com.example.gsm_bc2_android
 
 //import BottomSheetFragment
 
-import android.R.attr.path
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.nfc.*
 import android.nfc.tech.Ndef
@@ -28,7 +26,6 @@ import okhttp3.*
 import okhttp3.sse.EventSource
 import okhttp3.sse.EventSourceListener
 import okhttp3.sse.EventSources
-import okhttp3.sse.EventSources.createFactory
 import okio.IOException
 import java.util.concurrent.TimeUnit
 
@@ -153,7 +150,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         binding.selectBlock.setOnClickListener(){ // 블럭 확인
-            val intent = Intent(this, UserActivity::class.java)
+            val intent = Intent(this, BlockActivity::class.java)
             startActivity(intent)
             this.finish()
         }
