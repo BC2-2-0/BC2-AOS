@@ -17,6 +17,7 @@ class BottomSheetFragment(): BottomSheetDialogFragment() {
     private var TAG: String = "HomeActivity"
     private lateinit var nfcPendingIntent: PendingIntent
     private lateinit var nfcAdapter: NfcAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,7 +63,7 @@ class BottomSheetFragment(): BottomSheetDialogFragment() {
     }
 
     private fun getBottomSheetDialogDefaultHeight(): Int {
-        return getWindowHeight() * 84 / 100
+        return getWindowHeight() * 75 / 100
     }
 
     private fun getWindowHeight(): Int {
