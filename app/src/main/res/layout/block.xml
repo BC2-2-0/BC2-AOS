@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BlockActivity">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.22" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/point_block"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/squareblock"
+        android:elevation="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" >
+        <TextView
+            android:id="@+id/point_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendardsemibold"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:text="결제"
+            android:textColor="@color/black"
+            android:textSize="8pt"
+            app:layout_constraintLeft_toLeftOf="@+id/point_block"
+            app:layout_constraintTop_toTopOf="@+id/point_block" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/block"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:paddingTop="40dp"
+            tools:listitem="@layout/recyclerview" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/backbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/xml_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendardbold"
+        android:text="BlockChain"
+        android:textColor="@color/background_color"
+        android:textSize="27dp"
+        app:layout_constraintLeft_toLeftOf="@+id/xml_hi"
+        app:layout_constraintBottom_toTopOf="@id/xml_hi"/>
+
+    <TextView
+        android:id="@+id/xml_hi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendardbold"
+        android:text="거래내역"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="44dp"
+        android:textColor="#66000000"
+        android:textSize="27dp"
+        app:layout_constraintBottom_toTopOf="@id/point_block"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/point_block" />
+
+
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/point_block"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="2dp"
+        app:lottie_rawRes="@raw/animation"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

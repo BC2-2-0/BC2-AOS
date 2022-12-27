@@ -26,7 +26,7 @@ class ProfileAdapter(private val context: Context) : RecyclerView.Adapter<Profil
         //private val imgProfile: ImageView = itemView.findViewById(R.id.img_rv_photo)
         private val uid: TextView = itemView.findViewById(R.id.uid)
         private val email: TextView = itemView.findViewById(R.id.email)
-        private val account: TextView = itemView.findViewById(R.id.account)
+        private val account: TextView = itemView.findViewById(R.id.balance)
 
         fun bind(item: ProfileData) {
             uid.text = item.uid.toString()
