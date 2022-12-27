@@ -42,7 +42,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:paddingTop="40dp"
+            android:overScrollMode="never"
+            android:paddingTop="50dp"
             tools:listitem="@layout/recyclerview" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
