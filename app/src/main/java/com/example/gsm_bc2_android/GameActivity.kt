@@ -14,6 +14,12 @@ import com.bumptech.glide.Glide
 import com.example.gsm_bc2_android.databinding.GameBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.skydoves.balloon.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.text.DecimalFormat
 import java.util.*
 
 class GameActivity : AppCompatActivity() {
@@ -32,7 +38,9 @@ class GameActivity : AppCompatActivity() {
         val current_email = curUser?.email.toString()
         binding.xmlUsername.text = curUser?.displayName.toString()
         db = Room.databaseBuilder(this, Blockdb::class.java, "Blockdb").allowMainThreadQueries().build()
-        binding.currentMoney.text = db.userDao().getAccountByEmail(current_email).toString()+"원"
+        val t_dec_up = DecimalFormat("#,###")
+        var current_account = t_dec_up.format(db.userDao().getAccountByEmail(current_email))
+        binding.currentMoney.text = current_account+"원"
 
         //while(true) {
 //        val condition_num = random.nextInt(5)
@@ -49,7 +57,7 @@ class GameActivity : AppCompatActivity() {
             .setHeight(BalloonSizeSpec.WRAP)
             .setWidth(BalloonSizeSpec.WRAP)
             .setText(condition_hash)
-            .setTextColorResource(R.color.semiblack)
+            .setTextColorResource(R.color.background_color)
             .setTextSize(15f)
             .setTextTypeface(Typeface.BOLD)
             .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
@@ -67,12 +75,18 @@ class GameActivity : AppCompatActivity() {
             balloon.showAlignTop(binding.info)
         }
 
+        var retrofit = Retrofit.Builder()
+            .baseUrl("http://10.82.20.85:3000")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        var transportservice: transportservice = retrofit.create(transportservice::class.java)
+
         var numbers = arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
         val random = Random()
-        var temp_cnt = 3
+        var temp_cnt = 2
         timer.schedule(object : TimerTask() {
             override fun run() {
-                if(temp_cnt >=3 ){
+                if(temp_cnt >=2 ){
                     runOnUiThread {
                         binding.blockcoin.visibility = View.GONE
                         numbers = arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
@@ -85,21 +99,40 @@ class GameActivity : AppCompatActivity() {
                         Log.d("hash data : ", hash_msg)
 
                         binding.hash.text = hash_msg
-                        if(numbers[1] > 0 && numbers[2] > 0 && numbers[3] > 0 && numbers[4] > 0 && numbers[5] > 0 && numbers[6] > 0 && numbers[7] > 0 && numbers[8] > 0 && numbers[9] > 0) {
+//                        if(numbers[1] > 0 && numbers[2] > 0 && numbers[3] > 0 && numbers[4] > 0 && numbers[5] > 0 && numbers[6] > 0 && numbers[7] > 0 && numbers[8] > 0 && numbers[9] > 0) {
+                        if(numbers[1] > 0 && numbers[2] > 0 && numbers[3] > 0) {
                             //timer.cancel()
                             //binding.blockcoin.visibility = View.VISIBLE
                             db.userDao().AddAccountByEmail(current_email,100)
-                            binding.currentMoney.text = db.userDao().getAccountByEmail(current_email).toString()+"원"
+                            val t_dec_up = DecimalFormat("#,###")
+                            var current_account = db.userDao().getAccountByEmail(current_email)
+                            binding.currentMoney.text = t_dec_up.format(current_account).toString()+"원"
                             binding.blockcoin.visibility = View.VISIBLE
                             temp_cnt = 0
+                            Log.d("GameActivity","Hello")
+                            transportservice.requestLogin(current_email, current_account, 100).enqueue(object:
+                                Callback<transport>{
+                                override fun onFailure(call: Call<transport>, t: Throwable) {
+                                    Log.d("GameActivity","fail...")
+                                }
+
+                                override fun onResponse(call: Call<transport>, response: Response<transport>) {
+                                    //var login = response.body()
+                                    Log.d("GameActivity", response.body().toString())
+                                }
+                            })
+                            Log.d("GameActivity","bye")
+//                            val new_mining = block_tbl(mid,email,balance,menu,price,quantity)
+//                            db.MiningDao().insertMining()
+
                         }
 
                     }
                 }
                 else{
-                    temp_cnt += 1
+                    temp_cnt += 2
                 }
             }
-        }, 1000, 1000)
+        },                                                                                                                                                                                                                       0, 1000)
     }
 }
