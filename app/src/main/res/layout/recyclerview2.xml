@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="10dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="20dp"
+    android:background="@drawable/square2"
+    android:elevation="12dp"
+    >
+
+    <TextView
+        android:id="@+id/mid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textStyle="bold"
+        android:layout_marginLeft="20dp"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/pretendardlight"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="s21020@gsm.hs.kr"
+        android:textSize="16dp"
+        android:textColor="#66000000"
+        android:fontFamily="@font/pretendardsemibold"
+        android:layout_marginLeft="3sp"
+        />
+
+    <TextView
+        android:id="@+id/menu_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text=""
+        android:textSize="16dp"
+        android:textColor="#000000"
+        android:fontFamily="@font/pretendardregular"
+        android:layout_marginLeft="3sp"
+        />
+
+    <TextView
+        android:id="@+id/menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/menu_desc"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text=""
+        android:textSize="16dp"
+        android:textColor="@color/background_color"
+        android:fontFamily="@font/pretendardregular"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        >
+        <TextView
+            android:id="@+id/charged_money_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="충전 금액 : "
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:textColor="#99000000"
+            android:fontFamily="@font/pretendardthin"
+            android:layout_marginLeft="3dp"
+            />
+
+        <TextView
+            android:id="@+id/charged_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@id/charged_money_desc"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="4,500"
+            android:textSize="16dp"
+            android:textColor="#99000000"
+            android:fontFamily="@font/pretendardthin"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/balance_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="잔액 : "
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:textSize="16sp"
+        android:textColor="#99000000"
+        android:fontFamily="@font/pretendardthin"
+        app:layout_constraintRight_toLeftOf="@id/balance"
+        app:layout_constraintTop_toBottomOf="@id/menu_desc"/>
+
+    <TextView
+        android:id="@+id/balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10,000"
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"
+        android:textColor="#99000000"
+        android:fontFamily="@font/pretendardthin"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/menu_desc"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
