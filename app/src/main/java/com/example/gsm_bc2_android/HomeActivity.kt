@@ -77,25 +77,38 @@ class HomeActivity : AppCompatActivity() {
                 super.onEvent(eventSource, id, type, data)
                 Log.d(TAG, "On Event Received! Data -: $data")
                 var jsonobejct = JSONObject(data)
-                val email = jsonobejct.getString("email")
-                val balance = jsonobejct.getInt("balance")
-                val menu = jsonobejct.getString("menu")
-                val price = jsonobejct.getInt("price")
-                val quantity = jsonobejct.getInt("quantity")
-                val bid = jsonobejct.getInt("bid")
-                val new_block = block_tbl(bid,email,balance,menu,price,quantity)
-                Log.d(TAG,new_block.toString())
-                db.blockDao().insertblock(new_block)
-                Log.d(TAG,db.blockDao().getAllblock().toString())
-                db.userDao().AddAccountByEmail(current_email,10)
-                val t_dec_up2 = DecimalFormat("#,###")
-                if(email == current_email){
-                    db.userDao().UseAccountByEmail(current_email, quantity*price)
+                if(jsonobejct.getString("type") == "block"){
+                    val email = jsonobejct.getString("email")
+                    val balance = jsonobejct.getInt("balance")
+                    val menu = jsonobejct.getString("menu")
+                    val price = jsonobejct.getInt("price")
+                    val quantity = jsonobejct.getInt("quantity")
+                    val bid = jsonobejct.getInt("bid")
+                    val new_block = block_tbl(bid,email,balance,menu,price,quantity)
+                    Log.d(TAG,new_block.toString())
+                    db.blockDao().insertblock(new_block)
+                    Log.d(TAG,db.blockDao().getAllblock().toString())
+                    db.userDao().AddAccountByEmail(current_email,10)
+                    val t_dec_up2 = DecimalFormat("#,###")
+                    if(email == current_email){
+                        db.userDao().UseAccountByEmail(current_email, quantity*price)
+                    }
+                    var current_account = t_dec_up2.format(db.userDao().getAccountByEmail(current_email))
+                    runOnUiThread {
+                        binding.currentMoney.text = current_account+"원"
+                    }
                 }
-                var current_account = t_dec_up2.format(db.userDao().getAccountByEmail(current_email))
-                runOnUiThread {
-                    binding.currentMoney.text = current_account+"원"
+                else if(jsonobejct.getString("type") == "mining"){
+                    val mid = jsonobejct.getInt("mid")
+                    val email = jsonobejct.getString("email")
+                    val balance = jsonobejct.getInt("balance")
+                    val charged_money = jsonobejct.getInt("charged_money")
+                    val new_mining = mining_tbl(mid!!,email,balance,charged_money)
+                    Log.d(TAG,"mining : " + new_mining.toString())
+                    db.MiningDao().insertMining(new_mining)
+                    Log.d(TAG,db.MiningDao().getAllMining().toString())
                 }
+
 
             }
 

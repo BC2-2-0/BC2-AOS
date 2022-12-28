@@ -76,7 +76,7 @@ class GameActivity : AppCompatActivity() {
         }
 
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://10.82.20.85:3000")
+            .baseUrl("http://10.82.20.0:3000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         var transportservice: transportservice = retrofit.create(transportservice::class.java)
