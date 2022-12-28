@@ -24,14 +24,20 @@ class ProfileAdapter(private val context: Context) : RecyclerView.Adapter<Profil
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         //private val imgProfile: ImageView = itemView.findViewById(R.id.img_rv_photo)
-        private val uid: TextView = itemView.findViewById(R.id.uid)
+        private val bid: TextView = itemView.findViewById(R.id.bid)
         private val email: TextView = itemView.findViewById(R.id.email)
-        private val account: TextView = itemView.findViewById(R.id.balance)
+        private val balance: TextView = itemView.findViewById(R.id.balance)
+        private val menu: TextView = itemView.findViewById(R.id.menu)
+        private val price: TextView = itemView.findViewById(R.id.price)
+        private val quantity: TextView = itemView.findViewById(R.id.quantity)
 
         fun bind(item: ProfileData) {
-            uid.text = item.uid.toString()
+            bid.text = item.bid.toString()
             email.text = item.email
-            account.text = item.account.toString()
+            balance.text = item.balance.toString()
+            menu.text = item.menu
+            price.text = item.price.toString()
+            quantity.text = item.quantity.toString()
             //Glide.with(itemView).load(item.img).into(imgProfile)
         }
     }

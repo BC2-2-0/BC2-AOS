@@ -32,12 +32,6 @@ class BlockActivity : AppCompatActivity() {
             startActivity(Intent(this, HomeActivity::class.java))
         }
 
-//        binding.delete.setOnClickListener {
-//            Log.d("Before delete table", db.userDao().getAllUser().toString())
-//            db.userDao().deleteAllUser()
-//            Log.d("After delete table", db.userDao().getAllUser().toString())
-//        }
-
         initRecycler()
     }
 
@@ -53,19 +47,10 @@ class BlockActivity : AppCompatActivity() {
 //            add(ProfileData(img = R.drawable.profile5, name = "ruby", age = 21))
 //            add(ProfileData(img = R.drawable.profile4, name = "yuna", age = 23))
 //            Log.d("in for each", db.userDao().getAllUser().toString())
-//            db.userDao().getAllUser().forEach {
-//                Log.d("in for each", it.toString())
-//                add(ProfileData(uid = it.uid!!, email = it.email!!, account = it.account))
-//            }
-            add(ProfileData(uid = 1, email = "s21020@gsm.hs.kr", account = 10000))
-            add(ProfileData(uid = 1, email = "s21020@gsm.hs.kr", account = 10000))
-            add(ProfileData(uid = 1, email = "s21020@gsm.hs.kr", account = 10000))
-            add(ProfileData(uid = 1, email = "s21020@gsm.hs.kr", account = 10000))
-            add(ProfileData(uid = 1, email = "s21020@gsm.hs.kr", account = 10000))
-
-            add(ProfileData(uid = 1, email = "s21020@gsm.hs.kr", account = 10000))
-            add(ProfileData(uid = 1, email = "s21020@gsm.hs.kr", account = 10000))
-            add(ProfileData(uid = 1, email = "s21020@gsm.hs.kr", account = 10000))
+            db.blockDao().getAllblock().forEach {
+                add(ProfileData(bid = it.bid!!, email = it.email!!, balance = it.balance, menu=it.menu, price=it.price, quantity = it.quantity))
+            }
+            //add(ProfileData(bid = 1, email = "s21020@gsm.hs.kr", balance = 10000, menu="doritos", price=1500, quantity=2))
             profileAdapter.datas = datas
             profileAdapter.notifyDataSetChanged()
 

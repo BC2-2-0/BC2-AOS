@@ -27,6 +27,8 @@ import okhttp3.sse.EventSource
 import okhttp3.sse.EventSourceListener
 import okhttp3.sse.EventSources
 import okio.IOException
+import org.json.JSONObject
+import java.text.DecimalFormat
 import java.util.concurrent.TimeUnit
 
 
@@ -43,6 +45,16 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = HomeBinding.inflate(layoutInflater);
         setContentView(binding.root)
+        db = Room.databaseBuilder(this, Blockdb::class.java, "Blockdb").allowMainThreadQueries().build()
+        auth = Firebase.auth
+        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
+        val curUser = GoogleSignIn.getLastSignedInAccount(this)
+        val name = curUser?.displayName.toString()
+        val current_email = curUser?.email.toString()
 
         //sse
         val eventSourceListener = object : EventSourceListener() {
@@ -64,17 +76,40 @@ class HomeActivity : AppCompatActivity() {
             ) {
                 super.onEvent(eventSource, id, type, data)
                 Log.d(TAG, "On Event Received! Data -: $data")
+                var jsonobejct = JSONObject(data)
+                val email = jsonobejct.getString("email")
+                val balance = jsonobejct.getInt("balance")
+                val menu = jsonobejct.getString("menu")
+                val price = jsonobejct.getInt("price")
+                val quantity = jsonobejct.getInt("quantity")
+                val bid = jsonobejct.getInt("bid")
+                val new_block = block_tbl(bid,email,balance,menu,price,quantity)
+                Log.d(TAG,new_block.toString())
+                db.blockDao().insertblock(new_block)
+                Log.d(TAG,db.blockDao().getAllblock().toString())
+                db.userDao().AddAccountByEmail(current_email,10)
+                val t_dec_up2 = DecimalFormat("#,###")
+                if(email == current_email){
+                    db.userDao().UseAccountByEmail(current_email, quantity*price)
+                }
+                var current_account = t_dec_up2.format(db.userDao().getAccountByEmail(current_email))
+                runOnUiThread {
+                    binding.currentMoney.text = current_account+"원"
+                }
+
             }
 
             override fun onFailure(eventSource: EventSource, t: Throwable?, response: Response?) {
                 super.onFailure(eventSource, t, response)
                 Log.d(TAG, "On Failure -: ${response?.body}")
+                Log.d(TAG, t.toString())
+                Log.d(TAG,response.toString())
             }
         }
 
-        val client = OkHttpClient.Builder().connectTimeout(5, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.MINUTES)
-            .writeTimeout(10, TimeUnit.MINUTES)
+        val client = OkHttpClient.Builder().connectTimeout(50, TimeUnit.SECONDS)
+            .readTimeout(100, TimeUnit.MINUTES)
+            .writeTimeout(100, TimeUnit.MINUTES)
             .build()
 
         val request = Request.Builder()
@@ -122,24 +157,14 @@ class HomeActivity : AppCompatActivity() {
 
 
             //왼쪽 위에 구글 사용자 이름+안녕하세요!! 띄어주기
-        auth = Firebase.auth
-        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
-
-        val curUser = GoogleSignIn.getLastSignedInAccount(this)
-        val name = curUser?.displayName.toString()
-        val current_email = curUser?.email.toString()
         Log.d("curUser",name+current_email)
         //Log.d("name_HomeActivity",name)
         findViewById<TextView>(R.id.xml_username).text = name
         db = Room.databaseBuilder(this, Blockdb::class.java, "Blockdb").allowMainThreadQueries().build()
-        //db.userDao().insertUser(newUser)
-        Log.d("test getuser-h",db.userDao().getAllUser().toString())
-        var current_account = db.userDao().getAccountByEmail(current_email)
+//        Log.d("test getuser-h",db.userDao().getAllUser().toString())
+        val t_dec_up = DecimalFormat("#,###")
+        var current_account = t_dec_up.format(db.userDao().getAccountByEmail(current_email))
         Log.d("test_getaccount",current_account.toString())
         findViewById<TextView>(R.id.current_money).text = current_account.toString()+"원"
         Log.d("test_testView",findViewById<TextView>(R.id.current_money).text.toString())
