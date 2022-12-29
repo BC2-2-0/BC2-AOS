@@ -1,6 +1,7 @@
 package com.example.gsm_bc2_android
 
 data class ProfileData (
+    val type : String,
     val bid : Int,
     val email : String,
     val balance : Int,

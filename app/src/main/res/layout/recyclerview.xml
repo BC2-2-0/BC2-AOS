@@ -12,6 +12,7 @@
     android:layout_marginLeft="20dp"
     android:background="@drawable/square2"
     android:elevation="12dp"
+    android:id="@+id/block"
     >
 
     <TextView

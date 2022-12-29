@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 
 class ProfileAdapter(private val context: Context) : RecyclerView.Adapter<ProfileAdapter.ViewHolder>() {
@@ -30,6 +31,7 @@ class ProfileAdapter(private val context: Context) : RecyclerView.Adapter<Profil
         private val menu: TextView = itemView.findViewById(R.id.menu)
         private val price: TextView = itemView.findViewById(R.id.price)
         private val quantity: TextView = itemView.findViewById(R.id.quantity)
+        private val block: ConstraintLayout = itemView.findViewById(R.id.block)
 
         fun bind(item: ProfileData) {
             bid.text = item.bid.toString()
@@ -38,6 +40,13 @@ class ProfileAdapter(private val context: Context) : RecyclerView.Adapter<Profil
             menu.text = item.menu
             price.text = item.price.toString()
             quantity.text = item.quantity.toString()
+            if(item.type == "mine"){
+                block.setBackgroundResource(R.drawable.button2)
+            }
+            else if(item.type == "others"){
+                block.setBackgroundResource(R.drawable.square2)
+            }
+
             //Glide.with(itemView).load(item.img).into(imgProfile)
         }
     }
