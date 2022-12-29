@@ -91,10 +91,11 @@ class HomeActivity : AppCompatActivity() {
                     db.userDao().AddAccountByEmail(current_email,10)
                     val t_dec_up2 = DecimalFormat("#,###")
                     if(email == current_email){
-                        db.userDao().UseAccountByEmail(current_email, quantity*price)
+                        db.userDao().UseAccountByEmail(current_email, price)
                     }
                     var current_account = t_dec_up2.format(db.userDao().getAccountByEmail(current_email))
                     runOnUiThread {
+
                         binding.currentMoney.text = current_account+"원"
                     }
                 }
@@ -107,6 +108,7 @@ class HomeActivity : AppCompatActivity() {
                     Log.d(TAG,"mining : " + new_mining.toString())
                     db.MiningDao().insertMining(new_mining)
                     Log.d(TAG,db.MiningDao().getAllMining().toString())
+                    db.userDao().AddAccountByEmail(current_email,10)
                 }
 
 
