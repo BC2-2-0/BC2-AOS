@@ -77,13 +77,10 @@ class MainActivity : AppCompatActivity() {
 //                    val curUser = GoogleSignIn.getLastSignedInAccount(this)
 //                    val name = curUser?.displayName.toString()
 //                    Log.d("username",name)
-                    val intent = Intent(this, HomeActivity::class.java)
-
-
-
-                    lateinit var db: Blockdb
-                    this.finish()
-                    startActivity(intent)
+                    //val intent = Intent(this, HomeActivity::class.java)
+                    //lateinit var db: Blockdb
+                    //this.finish()
+                    //startActivity(intent)
                 }
             } catch (e: ApiException) {
                 println("안녕1 ${e.statusCode}")
@@ -101,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                         val curUser = GoogleSignIn.getLastSignedInAccount(this) // 현재 유저
                         val name = curUser?.email.toString() // 이름 불러옴
                         Log.d("username main",name) // 로그 남기고
-                        var newUser = UserInfo(null,name,0) // 유저객체 만들고
+                        var newUser = UserInfo(null,name,20000) // 유저객체 만들고
                         db = Room.databaseBuilder(this, Blockdb::class.java, "Blockdb").allowMainThreadQueries().build() // 디비 설정
                         db.userDao().insertUser(newUser) // 유저 row 생성
 
