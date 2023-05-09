@@ -8,6 +8,7 @@ import android.nfc.*
 import android.nfc.tech.Ndef
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kr.co.bootpay.android.Bootpay
+import kr.co.bootpay.android.events.BootpayEventListener
+import kr.co.bootpay.android.models.BootExtra
+import kr.co.bootpay.android.models.BootItem
+import kr.co.bootpay.android.models.BootUser
+import kr.co.bootpay.android.models.Payload
 import okhttp3.*
 import okhttp3.sse.EventSource
 import okhttp3.sse.EventSourceListener
@@ -34,6 +41,9 @@ import java.util.concurrent.TimeUnit
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: HomeBinding
+
+    private val application_id = "64237fd23049c8001c178ad3" // bootpay key
+
     lateinit var db: Blockdb
     private var TAG: String = "HomeActivity"
     private lateinit var nfcPendingIntent: PendingIntent
@@ -128,7 +138,7 @@ class HomeActivity : AppCompatActivity() {
             .build()
 
         val request = Request.Builder()
-            .url("http://10.82.20.0:3000/receive") // URL
+            .url("http://13.209.74.86:3000/receive") // URL
             .header("Accept", "application/json; q=0.5")
             .addHeader("Accept", "text/event-stream")
             .build()
@@ -150,6 +160,8 @@ class HomeActivity : AppCompatActivity() {
             }
         }
         //sse end
+
+
 
 //        bottomSheetBehavior.BottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
 //        override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -201,64 +213,139 @@ class HomeActivity : AppCompatActivity() {
             this.finish()
         }
 
-        val manager = getSystemService(NFC_SERVICE) as NfcManager
-        nfcAdapter = manager.defaultAdapter
-        nfcPendingIntent = PendingIntent.getActivity(
-            this, 0,
-            Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0
-        )
+//        val manager = getSystemService(NFC_SERVICE) as NfcManager
+//        nfcAdapter = manager.defaultAdapter
+//        nfcPendingIntent = PendingIntent.getActivity(
+//            this, 0,
+//            Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0
+//        )
 
 
     }
+    fun PaymentTest(v: View?) {
+        Log.d("bootpay","hi")
+        val extra = BootExtra()
+            .setCardQuota("0,2,3") // 일시불, 2개월, 3개월 할부 허용, 할부는 최대 12개월까지 사용됨 (5만원 이상 구매시 할부허용 범위)
+        val items: MutableList<BootItem> = ArrayList()
+        val item1 = BootItem().setName("마우's 스").setId("ITEM_CODE_MOUSE").setQty(1).setPrice(5000.0)
+        val item2 = BootItem().setName("키보드").setId("ITEM_KEYBOARD_MOUSE").setQty(1).setPrice(5000.0)
+        items.add(item1)
+        items.add(item2)
+        val payload = Payload()
 
+        payload.setApplicationId(application_id)
+            .setOrderName("부트페이 결제테스트")
+            .setPg("토스")
+            .setMethod("계좌이체")
+            .setOrderId("1234")
+            .setPrice(10000.0)
+            .setUser(getBootUser())
+            .setExtra(extra).items = items
 
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        val detectedTag : Tag? = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+        val map: MutableMap<String, Any> = HashMap()
+        map["1"] = "abcdef"
+        map["2"] = "abcdef55"
+        map["3"] = 1234
+        payload.metadata = map
+        //        payload.setMetadata(new Gson().toJson(map));
+        Bootpay.init(supportFragmentManager, applicationContext)
+            .setPayload(payload)
+            .setEventListener(object : BootpayEventListener {
+                override fun onCancel(data: String) {
+                    Log.d("bootpay", "cancel: $data")
+                }
 
+                override fun onError(data: String) {
+                    Log.d("bootpay", "error: $data")
+                }
+
+                override fun onClose() {
+                    Bootpay.removePaymentWindow()
+                }
+
+                override fun onIssued(data: String) {
+                    Log.d("bootpay", "issued: $data")
+                }
+
+                override fun onConfirm(data: String): Boolean {
+                    Log.d("bootpay", "confirm: $data")
+                    //                        Bootpay.transactionConfirm(data); //재고가 있어서 결제를 진행하려 할때 true (방법 1)
+                    return true //재고가 있어서 결제를 진행하려 할때 true (방법 2)
+                    //                        return false; //결제를 진행하지 않을때 false
+                }
+
+                override fun onDone(data: String) {
+                    Log.d("done", data)
+                }
+            }).requestPayment()
+    }
+
+    fun getBootUser(): BootUser? {
+        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
         val curUser = GoogleSignIn.getLastSignedInAccount(this)
-        val current_email = curUser?.email.toString()
-        val current_account = db.userDao().getAccountByEmail(current_email)
-        val writeValue : String = "{\"email\":\"${current_email}\", \"account\":${current_account}}"
-//        val writeValue : String = "{\"email\":\"${current_email}\", \"account\":10000}"
-        Log.d("nfc_write_value",writeValue)
-        val message: NdefMessage = createTagMessage(writeValue);
-
-        if (detectedTag != null) {
-            writeTag(message, detectedTag)
-        };
-    }
-    override fun onResume() {
-        super.onResume()
-        nfcAdapter.enableForegroundDispatch(this, nfcPendingIntent, null, null);
+        val userId = "123411aaaaaaaaaaaabd4ss121"
+        val user = BootUser()
+        user.id = curUser?.id.toString()
+        user.area = "서울"
+        user.gender = 1 //1: 남자, 0: 여자
+        user.email = curUser?.email.toString()
+        user.phone = "010-1234-4567"
+        user.birth = "1988-06-10"
+        user.username = curUser?.displayName.toString()
+        return user
     }
 
-    override fun onPause() {
-        super.onPause()
-        nfcAdapter.disableForegroundDispatch(this);
-    }
-    private fun createTagMessage(msg: String): NdefMessage {
-        return NdefMessage(NdefRecord.createUri(msg))
-    }
-
-    fun writeTag(message: NdefMessage, tag: Tag) {
-        val size = message.toByteArray().size
-        try {
-            val ndef = Ndef.get(tag)
-            if (ndef != null) {
-                ndef.connect()
-                if (!ndef.isWritable) {
-                    Toast.makeText(applicationContext, "can not write NFC tag", Toast.LENGTH_SHORT).show()
-                }
-                if (ndef.maxSize < size) {
-                    Toast.makeText(applicationContext, "NFC tag size too large", Toast.LENGTH_SHORT).show()
-                }
-                ndef.writeNdefMessage(message)
-                Toast.makeText(applicationContext, "NFC tag is writted", Toast.LENGTH_SHORT).show()
-            }
-        } catch (e: Exception) {
-            //Log.i(TAG,e.message);
-        }
-    }
+//    override fun onNewIntent(intent: Intent) {
+//        super.onNewIntent(intent)
+//        val detectedTag : Tag? = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+//
+//        val curUser = GoogleSignIn.getLastSignedInAccount(this)
+//        val current_email = curUser?.email.toString()
+//        val current_account = db.userDao().getAccountByEmail(current_email)
+//        val writeValue : String = "{\"email\":\"${current_email}\", \"account\":${current_account}}"
+////        val writeValue : String = "{\"email\":\"${current_email}\", \"account\":10000}"
+//        Log.d("nfc_write_value",writeValue)
+//        val message: NdefMessage = createTagMessage(writeValue);
+//
+//        if (detectedTag != null) {
+//            writeTag(message, detectedTag)
+//        };
+//    }
+//    override fun onResume() {
+//        super.onResume()
+//        nfcAdapter.enableForegroundDispatch(this, nfcPendingIntent, null, null);
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        nfcAdapter.disableForegroundDispatch(this);
+//    }
+//    private fun createTagMessage(msg: String): NdefMessage {
+//        return NdefMessage(NdefRecord.createUri(msg))
+//    }
+//
+//    fun writeTag(message: NdefMessage, tag: Tag) {
+//        val size = message.toByteArray().size
+//        try {
+//            val ndef = Ndef.get(tag)
+//            if (ndef != null) {
+//                ndef.connect()
+//                if (!ndef.isWritable) {
+//                    Toast.makeText(applicationContext, "can not write NFC tag", Toast.LENGTH_SHORT).show()
+//                }
+//                if (ndef.maxSize < size) {
+//                    Toast.makeText(applicationContext, "NFC tag size too large", Toast.LENGTH_SHORT).show()
+//                }
+//                ndef.writeNdefMessage(message)
+//                Toast.makeText(applicationContext, "NFC tag is writted", Toast.LENGTH_SHORT).show()
+//            }
+//        } catch (e: Exception) {
+//            //Log.i(TAG,e.message);
+//        }
+//    }
 
 }
