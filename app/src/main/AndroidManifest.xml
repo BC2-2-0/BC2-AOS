@@ -29,6 +29,7 @@
         <activity android:name=".HomeActivity"></activity>
         <activity android:name=".BlockActivity"></activity>
         <activity android:name=".GameActivity" />
+        <activity android:name=".ChargeActivity"/>
         <activity
             android:name=".SplashActivity"
             android:exported="true">
