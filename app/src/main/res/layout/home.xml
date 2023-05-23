@@ -21,6 +21,7 @@
         android:elevation="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2" >
+
         <TextView
             android:id="@+id/point_desc"
             android:layout_width="wrap_content"
@@ -139,6 +140,8 @@
                 android:fontFamily="@font/pretendardmedium"
                 android:textSize="14dp"
                 />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -181,9 +184,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/point_block" />
 
-
-
-
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="135dp"
         android:layout_height="135dp"
@@ -196,9 +196,5 @@
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         />
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

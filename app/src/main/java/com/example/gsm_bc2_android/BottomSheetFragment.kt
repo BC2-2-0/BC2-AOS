@@ -77,7 +77,7 @@ class BottomSheetFragment() : BottomSheetDialogFragment() {
     }
 
     private fun getBottomSheetDialogDefaultHeight(): Int {
-        return getWindowHeight() * 35 / 100
+        return getWindowHeight() * 30 / 100
     }
 
     private fun getWindowHeight(): Int {
