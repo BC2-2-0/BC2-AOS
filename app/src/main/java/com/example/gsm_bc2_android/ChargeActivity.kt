@@ -24,6 +24,11 @@ import kr.co.bootpay.android.models.BootItem
 import kr.co.bootpay.android.models.BootUser
 import kr.co.bootpay.android.models.Payload
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class ChargeActivity : AppCompatActivity() {
 
@@ -144,10 +149,29 @@ class ChargeActivity : AppCompatActivity() {
                 }
 
                 override fun onDone(data: String) {
+                    var retrofit = Retrofit.Builder()
+                        .baseUrl("http://13.125.77.165:3000")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build()
+                    var transportservice: transportservice = retrofit.create(transportservice::class.java)
                     Log.d("done",data)
                     val json_data = JSONObject(data).getJSONObject("data")
                     Log.d("done", json_data.getInt("price").toString())
                     db.userDao().AddAccountByEmail(current_email,json_data.getInt("price"))
+                    db = Room.databaseBuilder(this@ChargeActivity, Blockdb::class.java, "Blockdb").allowMainThreadQueries()
+                        .build()
+                    var current_account = db.userDao().getAccountByEmail(current_email)
+                    transportservice.requestLogin(current_email, current_account, json_data.getInt("price")).enqueue(object:
+                        Callback<transport> {
+                        override fun onFailure(call: Call<transport>, t: Throwable) {
+                            Log.d("ChargeActivity","fail...")
+                        }
+
+                        override fun onResponse(call: Call<transport>, response: Response<transport>) {
+                            //var login = response.body()
+                            Log.d("ChargeActivity", response.body().toString())
+                        }
+                    })
 
                     this@ChargeActivity.startActivity(Intent(this@ChargeActivity, HomeActivity::class.java))
                 }
