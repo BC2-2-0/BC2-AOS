@@ -33,7 +33,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ChargeActivity : AppCompatActivity() {
 
     private lateinit var binding: ChargeBinding
-    private val application_id = "64237fd23049c8001c178ad3" // bootpay key
+    private val application_id = "" // bootpay key
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var db: Blockdb
     private var auth : FirebaseAuth? = null
