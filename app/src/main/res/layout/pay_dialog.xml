@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/pay_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/pay_box"
+        />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="원"
+        android:textColor="@color/black"
+        android:fontFamily="@font/pretendardbold"
+        app:layout_constraintTop_toTopOf="@id/pay_box"
+        app:layout_constraintLeft_toLeftOf="@id/pay_box"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="14dp"
+        />
+
+    <TextView
+        android:id="@+id/item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="콘치 "
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/price"
+        app:layout_constraintLeft_toLeftOf="@id/pay_box"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="14dp"
+        />
+
+    <TextView
+        android:id="@+id/quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2개"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/price"
+        app:layout_constraintLeft_toRightOf="@id/item"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="를"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/price"
+        app:layout_constraintLeft_toRightOf="@id/quantity"
+        android:layout_marginTop="20dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="구매하시려는게 맞나요?"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/item"
+        app:layout_constraintLeft_toLeftOf="@id/item"
+
+        />
+
+    <ImageView
+        android:id="@+id/pay_cancle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/pay_box"
+        app:layout_constraintBottom_toBottomOf="@id/pay_box"
+        android:background="@drawable/pay_cancle"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="취소"
+        android:textColor="@color/black"
+        android:fontFamily="@font/pretendardregular"
+        app:layout_constraintLeft_toLeftOf="@id/pay_cancle"
+        app:layout_constraintRight_toRightOf="@id/pay_cancle"
+        app:layout_constraintTop_toTopOf="@id/pay_cancle"
+        app:layout_constraintBottom_toBottomOf="@id/pay_cancle"
+        />
+
+    <ImageView
+        android:id="@+id/pay_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="@+id/pay_box"
+        app:layout_constraintBottom_toBottomOf="@id/pay_box"
+        android:background="@drawable/pay_confirm"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="확인"
+        android:textColor="@color/white"
+        android:fontFamily="@font/pretendardregular"
+        app:layout_constraintLeft_toLeftOf="@id/pay_confirm"
+        app:layout_constraintRight_toRightOf="@id/pay_confirm"
+        app:layout_constraintTop_toTopOf="@id/pay_confirm"
+        app:layout_constraintBottom_toBottomOf="@id/pay_confirm"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
