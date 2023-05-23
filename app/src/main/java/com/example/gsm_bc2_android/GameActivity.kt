@@ -78,7 +78,7 @@ class GameActivity : AppCompatActivity() {
         }
 
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://10.82.20.0:3000")
+            .baseUrl("http://13.125.77.165:3000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         var transportservice: transportservice = retrofit.create(transportservice::class.java)
@@ -120,6 +120,7 @@ class GameActivity : AppCompatActivity() {
                             binding.blockcoin.playAnimation()
                             temp_cnt = 0
                             Log.d("GameActivity","Hello")
+
                             transportservice.requestLogin(current_email, current_account, 100).enqueue(object:
                                 Callback<transport>{
                                 override fun onFailure(call: Call<transport>, t: Throwable) {
